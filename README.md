@@ -1,49 +1,80 @@
-# 15. Appoint Management System
-# Medical Clinic Appointment System
+# 15. Appoint Management System  
+# Beauty Salon Booking System  
 
-**Streamlining Healthcare Scheduling**
+**Simplifying Appointment Scheduling for Beauty Services**
 
 ## Project Overview
 
-This project provides a platform for managing and scheduling appointments, specifically tailored for a medical clinic environment.  The system is designed with a microservices architecture to ensure scalability and maintainability. It enables patients to book appointments, healthcare providers to manage their availability, and facilitates communication through notifications.
+This project is a platform for managing and booking appointments, built for beauty salons.  
+It uses a microservices architecture to support scalability and ease of maintenance.  
+Customers can book services, salon staff can manage availability, and the system sends appointment reminders.
 
 ## Microservices and Technologies
 
-The system is composed of the following microservices, built using Node.js and related technologies:
+The platform includes these microservices, built with Node.js:
 
-* **User Service (Node.js, Express.js):**
-    * Manages patient and provider accounts, authentication, and authorization.
-    * Technology: Node.js, Express.js, Supabase (for database).
-* **Schedule Service (Node.js, Express.js):**
-    * Handles appointment scheduling logic, including availability management and booking.
-    * Technology: Node.js, Express.js, Supabase (for database).
-* **Notification Service (Node.js):**
-    * Manages appointment reminders and updates.
-    * Technology: Node.js.
+- **User Service (Node.js, Express.js)**  
+  - Handles customer and staff accounts, authentication, and authorization.  
+  - Uses Supabase for the database.
+
+- **Schedule Service (Node.js, Express.js)**  
+  - Manages booking logic, staff availability, and service slots.  
+  - Uses Supabase for the database.
+
+- **Notification Service (Node.js)**  
+  - Sends reminders and updates for upcoming appointments.  
+  - Uses Supabase for the database.
 
 ## Project Architecture
 
-+------------------------+|        Client          ||                        ||    +--------------+    ||    |  Web Browser  |    ||    +--------------+    ||                        |+------------------------+^| (HTTPS)+------------------------+|     API Gateway      |  (Node.js, Express)| (Kong/Express Proxy) |+------------------------+|+---+---+|       |+--------+  +--------+  +-----------------+| User   |  | Schedule|  | Notification    || Service|  | Service |  | Service         ||(Node.js)|  |(Node.js)|  |(Node.js)       |+--------+  +--------+  +-----------------+|       |       |+--------+  +--------+  +--------+| User DB|  |Schedule|  |Notification||(Supabase)|  |DB      |  |DB        |+--------+  +--------+  +--------+(Supabase)    (Supabase)    (Supabase)
++------------------------+
+|        Client          |
+|   +--------------+     |
+|   |  Web Browser  |     |
++------------------------+
+           |
+        (HTTPS)
+           |
++------------------------+
+|      API Gateway       |
+| (Node.js, Express.js)  |
++------------------------+
+       |        |        |
++--------+  +--------+  +-----------------+
+|  User  |  |Schedule|  |  Notification   |
+|Service |  |Service |  |    Service      |
++--------+  +--------+  +-----------------+
+    |           |              |
++--------+  +--------+     +--------+
+| User DB|  |Schedule|     | Notify |
+|Supabase|  | DB     |     |  DB    |
++--------+  +--------+     +--------+
+
+
 ## Technology Stack
 
-* **Frontend:**
-    * React
-    * TypeScript
-    * React Router
-* **Backend:**
-    * Node.js
-    * Express.js
-* **Database:**
-    * Supabase (PostgreSQL)
-* **Communication:**
-    * RESTful APIs
-    * JSON
-* **API Gateway:**
-    * Node.js with Express.js
+### Frontend
+- React  
+- TypeScript  
+- React Router  
+
+### Backend
+- Node.js  
+- Express.js  
+
+### Database
+- Supabase (PostgreSQL)  
+
+### Communication
+- RESTful APIs  
+- JSON  
+
+### API Gateway
+- Node.js with Express.js  
 
 ## Features
 
-* Patient appointment booking
-* Provider schedule management
-* Appointment reminders and updates
-* Calendar Integration (Optional)
+- Customer appointment booking  
+- Staff schedule and service management  
+- Appointment notifications and reminders  
+- Optional calendar integration  
