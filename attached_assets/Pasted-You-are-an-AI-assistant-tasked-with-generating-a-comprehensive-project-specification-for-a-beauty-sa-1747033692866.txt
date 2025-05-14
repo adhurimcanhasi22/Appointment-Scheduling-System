@@ -1,0 +1,161 @@
+You are an AI assistant tasked with generating a comprehensive project specification for a beauty salon appointment booking system. This system will be deployed using Docker and a microservices architecture. The goal is to create a web application (not a mobile app) that allows clients to book appointments, salon staff to manage schedules, and the system to handle notifications.
+
+The prompt should be very detailed and clear, providing enough information for another AI to generate the necessary code and configuration.
+
+Here's a breakdown of the requirements:
+
+**1. Overall System Description:**
+
+* Create a web-based appointment booking system for a beauty salon.
+* The system should allow clients to view available services, staff, and time slots, and book appointments.
+* The system should allow salon staff to manage their schedules, services, and client appointments.
+* The system should send notifications for appointment confirmations and reminders.
+
+**2. Microservices Architecture:**
+
+* The system must be built using a microservices architecture.
+* Each microservice should be independently deployable and scalable using Docker.
+* Define the following microservices:
+    * **User Service:** Handles client and staff accounts, authentication, and authorization.
+    * **Schedule Service:** Handles appointment scheduling logic, including service and staff availability, and booking management.
+    * **Notification Service:** Handles sending notifications (email, SMS -  *Optional: if possible*).
+    * **API Gateway:** A single point of entry for all client requests, routing them to the appropriate microservice.
+
+**3. Technology Stack:**
+
+* **Frontend:**
+    * Language: TypeScript
+    * Framework: React
+    * Routing: React Router
+* **Backend:**
+    * Language: Node.js
+    * Framework: Express.js
+* **Database:**
+    * Supabase (PostgreSQL) - *Important: Specify Supabase clearly*
+* **Communication:**
+    * Protocol: RESTful APIs
+    * Data Format: JSON
+* **API Gateway:**
+     * Node.js
+     * Express.js (or suggest a suitable alternative like Kong if appropriate for a microservices architecture)
+* **Containerization:**
+    * Docker (for all microservices)
+
+**4. Detailed Microservice Specifications:**
+
+* **User Service:**
+    * Functions:
+        * User registration (client and staff)
+        * User login and logout
+        * User authentication and authorization (role-based access control: client, staff)
+        * Profile management (client and staff)
+        * Password management (reset, change)
+    * Data Models:
+        * User (id, role, name, email, password, phone, address, etc.)
+    * API Endpoints:
+        * /users (POST - create user, GET - get all users)
+        * /users/:id (GET - get user by id, PUT - update user, DELETE - delete user)
+        * /login (POST - login)
+        * /logout (POST - logout)
+        * /register (POST - register)
+        * /profile (GET - get current user profile, PUT - update current user profile)
+        * /password/reset (POST - request password reset, PUT - reset password)
+    * Security:
+        * Authentication: JWT (JSON Web Tokens)
+        * Authorization: Role-based (client, staff)
+
+* **Schedule Service:**
+    * Functions:
+        * Manage services offered by the salon (name, description, duration, price).
+        * Manage staff availability (working hours, days off).
+        * Manage appointments (create, read, update, delete).
+        * Check staff availability for a given time slot.
+        * Calculate appointment duration and cost.
+        * Handle booking and cancellation of appointments.
+    * Data Models:
+        * Service (id, name, description, duration, price)
+        * Staff (id, user\_id, availability, services)  // staff has a user_id
+        * Availability (id, staff\_id, date, start\_time, end\_time)
+        * Appointment (id, client\_id, staff\_id, service\_id, start\_time, end\_time, status, created_at)
+    * API Endpoints:
+        * /services (POST - create service, GET - get all services)
+        * /services/:id (GET - get service by id, PUT - update service, DELETE - delete service)
+        * /staff (GET - get all staff, GET - get staff by id)
+        * /staff/:staffId/availability (GET - get staff availability, POST - set staff availability)
+        * /appointments (POST - create appointment, GET - get all appointments, GET - get appointments by client/staff ID)
+        * /appointments/:id (GET - get appointment by id, PUT - update appointment, DELETE - delete appointment)
+        * /availability/check (POST - check availability)
+    * Business Logic:
+        * Prevent double booking.
+        * Ensure appointments are within staff availability.
+        * Automatically calculate appointment end time.
+
+* **Notification Service:**
+    * Functions:
+        * Send appointment confirmation emails to clients.
+        * Send appointment reminder notifications (email, SMS - *Optional*) to clients.
+        * Send appointment updates/cancellation notifications to clients and staff.
+    * Integration:
+        * Use a service like SendGrid or Mailgun for email.
+        * *Optional*: Use a service like Twilio for SMS.
+    * Events:
+        * Listen for "appointment.created" event.
+        * Listen for "appointment.updated" event.
+        * Listen for "appointment.cancelled" event.
+    * Message Formats:
+         * Define the structure of the messages sent (e.g., JSON with appointment details).
+
+* **API Gateway:**
+    * Functions:
+        * Route incoming requests to the appropriate microservice.
+        * Handle authentication and authorization.
+        * Implement rate limiting.
+        * Handle request logging.
+    * Technology:
+        * Node.js with Express.js  *or* Suggest Kong API Gateway.  Justify the choice.
+    * Configuration:
+        * Define routing rules.
+        * Define authentication middleware.
+
+**5. Authentication and Authorization:**
+
+* Implement user authentication using JWT.
+* Implement role-based access control (RBAC):
+    * Clients can book appointments for themselves.
+    * Staff can manage their own schedules, services, and appointments.
+    * Staff can view client information related to their appointments.
+    * Consider defining an "Admin" role (in User Service) for system-wide management (if time allows).
+
+**6. Database (Supabase):**
+
+* Use Supabase as the PostgreSQL database.
+* Define the database schema for each microservice.  *Important:  Emphasize that the schema should be designed within Supabase.*
+* *Important:* The prompt should note that each microservice should ideally have its own schema within the same Supabase instance, if feasible, for better isolation.
+
+**7. Dockerization:**
+
+* Create Dockerfiles for each microservice (User Service, Schedule Service, Notification Service, API Gateway).
+* Create a `docker-compose.yml` file to orchestrate the services.
+* The `docker-compose.yml` should define:
+    * Services
+    * Networks
+    * Volumes (if needed)
+    * Environment variables (for configuration)
+    * Dependencies between services
+
+**8.  Important Considerations:**
+
+* Scalability: The system should be designed to scale horizontally (more instances of each service).
+* Maintainability: The microservices architecture should make the system easier to maintain and update.
+* Security:  Implement appropriate security measures, including input validation, authentication, and authorization.
+* Error Handling:  Implement robust error handling and logging.
+* Testing:  Include unit and integration testing.  *Optional:  if possible to add to the prompt*
+* Documentation:  *Optional: if possible to add to the prompt*
+
+**9.  Specific Questions for the AI (to refine the prompt further):**
+
+* Are there any specific beauty salon services that should be included in the initial data setup (e.g., haircut, coloring, manicure, facial)?
+* What are the essential staff roles in a typical beauty salon (e.g., Hair Stylist, Esthetician, Nail Technician)?
+* What notification methods are most important (email, SMS, or both)?
+* Are there any specific business rules for appointment booking (e.g., minimum booking time in advance, cancellation policy)?
+* Should the system include a calendar view for appointments?  If so, which service(s) should handle that?

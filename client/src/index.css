@@ -1,0 +1,124 @@
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Poppins:wght@300;400;500;600&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  /* Primary pink colors */
+  --primary: 334 60% 56%; /* #D64A84 */
+  --primary-light: 350 79% 87%; /* #F8C3CD */
+  --primary-dark: 332 54% 48%; /* #C43873 */
+  
+  /* Secondary purple colors */
+  --secondary: 285 19% 37%; /* #6B4E71 */
+  --secondary-light: 284 18% 57%; /* #9C80A2 */
+  --secondary-dark: 286 18% 29%; /* #523D56 */
+  
+  /* Base setup */
+  --background: 0 0% 98%;
+  --foreground: 220 14.3% 10.1%;
+  --card: 0 0% 100%;
+  --card-foreground: 220 14.3% 10.1%;
+  --popover: 0 0% 100%;
+  --popover-foreground: 220 14.3% 10.1%;
+  --muted: 220 14.3% 95.9%;
+  --muted-foreground: 220 5% 43%;
+  --accent: 350 79% 87%;
+  --accent-foreground: 334 60% 56%;
+  --destructive: 0 84.2% 60.2%;
+  --destructive-foreground: 210 20% 98%;
+  --border: 220 13% 91%;
+  --input: 220 13% 91%;
+  --ring: 334 60% 56%;
+  
+  /* Chart colors */
+  --chart-1: 334 60% 56%;
+  --chart-2: 350 79% 87%;
+  --chart-3: 285 19% 37%;
+  --chart-4: 284 18% 57%;
+  --chart-5: 332 54% 48%;
+  
+  /* Sidebar colors */
+  --sidebar-background: 220 14.3% 10.1%;
+  --sidebar-foreground: 0 0% 100%;
+  --sidebar-primary: 334 60% 56%;
+  --sidebar-primary-foreground: 0 0% 100%;
+  --sidebar-accent: 285 19% 30%;
+  --sidebar-accent-foreground: 0 0% 100%;
+  --sidebar-border: 220 14.3% 20.1%;
+  --sidebar-ring: 334 60% 56%;
+  
+  --radius: 0.5rem;
+}
+
+.dark {
+  --background: 240 10% 3.9%;
+  --foreground: 0 0% 98%;
+  --card: 240 10% 3.9%;
+  --card-foreground: 0 0% 98%;
+  --popover: 240 10% 3.9%;
+  --popover-foreground: 0 0% 98%;
+  --primary: 334 60% 56%;
+  --primary-foreground: 0 0% 98%;
+  --secondary: 285 19% 37%;
+  --secondary-foreground: 0 0% 98%;
+  --muted: 240 3.7% 15.9%;
+  --muted-foreground: 240 5% 64.9%;
+  --accent: 332 54% 48%;
+  --accent-foreground: 0 0% 98%;
+  --destructive: 0 62.8% 30.6%;
+  --destructive-foreground: 0 0% 98%;
+  --border: 240 3.7% 15.9%;
+  --input: 240 3.7% 15.9%;
+  --ring: 334 60% 56%;
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  
+  body {
+    @apply font-sans bg-background text-foreground;
+    font-family: 'Poppins', sans-serif;
+  }
+  
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Playfair Display', serif;
+  }
+}
+
+@layer components {
+  .calendar-day {
+    aspect-ratio: 1/1;
+  }
+  
+  .time-slot {
+    @apply p-2 text-center border border-neutral-200 rounded text-sm transition duration-200;
+  }
+  
+  .time-slot:hover:not(.time-slot-booked) {
+    @apply bg-primary-light text-primary border-primary;
+  }
+  
+  .time-slot-booked {
+    @apply bg-neutral-200 text-neutral-500 cursor-not-allowed;
+  }
+  
+  .time-slot-selected {
+    @apply bg-primary text-white border-primary;
+  }
+  
+  .service-card {
+    @apply bg-white border border-neutral-200 rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-all duration-200 cursor-pointer;
+  }
+  
+  .service-card:hover {
+    transform: translateY(-4px);
+  }
+  
+  .staff-card {
+    @apply bg-white border border-neutral-200 rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-all duration-200 cursor-pointer;
+  }
+}
