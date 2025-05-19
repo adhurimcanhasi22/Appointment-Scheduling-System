@@ -1,0 +1,90 @@
+version: '3.8'
+
+services:
+  # Database service
+  postgres:
+    image: postgres:15
+    container_name: salon-db
+    environment:
+      - DATABASE_URL=postgresql://postgres.maqrkhuwzcgohgszsihi:VjollcaAlica2206@aws-0-eu-central-1.pooler.supabase.com:6543/postgres
+      - POSTGRES_HOST_AUTH_METHOD=trust
+    ports:
+      - '5432:5432'
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U postgres']
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  # User service
+  user-service:
+    build:
+      context: .
+      dockerfile: services/user-service/Dockerfile
+    container_name: salon-user-service
+    depends_on:
+      postgres:
+        condition: service_healthy
+    ports:
+      - '3001:3001'
+    environment:
+      - DATABASE_URL=postgresql://postgres.maqrkhuwzcgohgszsihi:VjollcaAlica2206@aws-0-eu-central-1.pooler.supabase.com:6543/postgres
+      - PORT=3001
+    #restart: unless-stopped
+
+  # Schedule service
+  schedule-service:
+    build:
+      context: .
+      dockerfile: services/schedule-service/Dockerfile
+    container_name: salon-schedule-service
+    depends_on:
+      postgres:
+        condition: service_healthy
+    ports:
+      - '3002:3002'
+    environment:
+      - DATABASE_URL=postgresql://postgres.maqrkhuwzcgohgszsihi:VjollcaAlica2206@aws-0-eu-central-1.pooler.supabase.com:6543/postgres
+      - PORT=3002
+    #restart: unless-stopped
+
+  # Notification service
+  notification-service:
+    build:
+      context: .
+      dockerfile: services/notification-service/Dockerfile
+    container_name: salon-notification-service
+    depends_on:
+      postgres:
+        condition: service_healthy
+    ports:
+      - '3003:3003'
+    environment:
+      - DATABASE_URL=postgresql://postgres.maqrkhuwzcgohgszsihi:VjollcaAlica2206@aws-0-eu-central-1.pooler.supabase.com:6543/postgres
+      - PORT=3003
+    #restart: unless-stopped
+
+  # API Gateway (Main Express app)
+  api-gateway:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: salon-api-gateway
+    depends_on:
+      - user-service
+      - schedule-service
+      - notification-service
+    ports:
+      - '5000:5000'
+    environment:
+      - DATABASE_URL=postgresql://postgres.maqrkhuwzcgohgszsihi:VjollcaAlica2206@aws-0-eu-central-1.pooler.supabase.com:6543/postgres
+      - USER_SERVICE_URL=http://user-service:3001
+      - SCHEDULE_SERVICE_URL=http://schedule-service:3002
+      - NOTIFICATION_SERVICE_URL=http://notification-service:3003
+      - PORT=5000
+    #restart: unless-stopped
+
+volumes:
+  postgres_data:
